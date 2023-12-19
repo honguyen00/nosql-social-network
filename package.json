@@ -5,16 +5,16 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-      "start": "node index.js",
-      "dev": "nodemon index.js",
-      "seed": "node utils/seed.js"
+        "start": "node index.js",
+        "dev": "nodemon index.js",
+        "seed": "node utils/seed.js"
     },
     "dependencies": {
-      "express": "^4.17.1",
-      "mongoose": "^7.0.2"
+        "datejs": "^1.0.0-rc3",
+        "express": "^4.17.1",
+        "mongoose": "^7.0.2"
     },
     "devDependencies": {
-      "nodemon": "^2.0.9"
+        "nodemon": "^2.0.9"
     }
-  }
-  
+}
