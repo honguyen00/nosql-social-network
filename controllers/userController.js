@@ -31,7 +31,7 @@ module.exports = {
     },
     async updateUserById(req, res) {
         try {
-            const user = await User.findOneAndUpdate({_id: req.param.id}, req.body, {new: true})
+            const user = await User.findOneAndUpdate({_id: req.params.id}, req.body, {new: true})
             !user ? res.status(404).json({ message: 'Update unsuccessfully'}) : res.json(user)
         } catch (error) {
             res.status(500).json(error);
@@ -61,9 +61,9 @@ module.exports = {
             if(!friend) {
                 return res.status(404).json({ message: 'No friend found' });
             }
-            const updateUser = await User.updateOne({ _id: req.params.userId}, { $push: { friends: req.params.friendId }}, {new: true});
-            const updateFriend = await User.updateOne({ _id: req.params.friendId}, { $push: { friends: req.params.userId }}, {new: true});
-            res.status(200).json(updateUser, updateFriend);
+            const updateUser = await User.updateOne({ _id: req.params.userId}, { $addToSet: { friends: req.params.friendId }}, {new: true});
+            const updateFriend = await User.updateOne({ _id: req.params.friendId}, { $addToSet : { friends: req.params.userId }}, {new: true});
+            res.status(200).json({updateUser, updateFriend});
         } catch (error) {
             res.status(500).json(error);
         }
@@ -80,7 +80,7 @@ module.exports = {
             }
             const deleteFromUser = await User.updateOne({ _id: req.params.userId}, { $pull: { friends: req.params.friendId }}, {new: true});
             const deleteFromFriend = await User.updateOne({ _id: req.params.friendId}, { $pull: { friends: req.params.userId }}, {new: true});
-            res.status(200).json(deleteFromUser, deleteFromFriend);
+            res.status(200).json({deleteFromUser, deleteFromFriend});
         } catch (error) {
             
         }

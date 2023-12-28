@@ -7,14 +7,12 @@ const thoughtSchema = new Schema(
         thoughtText: {
             type: String,
             required: true,
-            validate: {
-                validator: {
-                    function(val) {
-                        return val.length >= 1 && val.length <= 280
-                    },
-                    message: () => 'Thought must be between 1 and 280 characters long'
-                }
-            },
+            validate: [
+                function(val) {
+                    return val.length >= 1 && val.length <= 280
+                },
+                'Thought must be between 1 and 280 characters long' 
+            ],
             trim: true
         },
         createdAt: {

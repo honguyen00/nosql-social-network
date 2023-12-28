@@ -11,7 +11,7 @@ module.exports = {
     },
     async getThoughtById(req, res) {
         try {
-            const thought = await Thought.findOne({ _id: req.params.id });
+            const thought = await Thought.findOne({ _id: req.params.thoughtId });
             !thought ? res.status(404).json({ message: 'No thought match' }) : res.status(200).json(thought);
         } catch (error) {
             res.status(500).json(error);
@@ -23,14 +23,14 @@ module.exports = {
             const updateUser = await User.findOneAndUpdate({
                 _id: req.body.userId
             }, {$push: {thoughts: thought._id}}, {new: true});
-            res.status(200).json(thought, updateUser);
+            res.status(200).json({thought, updateUser});
         } catch (error) {
             res.status(500).json(error);
         }
     },
     async updateThought(req, res) {
         try {
-            const thought = await Thought.findOneAndUpdate({_id: req.param.id}, req.body, {new: true});
+            const thought = await Thought.findOneAndUpdate({_id: req.params.thoughtId}, req.body, {new: true});
             !thought ? res.status(404).json({message: 'Update unsuccessfully'}) : res.status(200).json(thought);
         } catch (error) {
             res.status(500).json(error);
@@ -38,11 +38,11 @@ module.exports = {
     },
     async deleteThought(req, res) {
         try {
-            const thought = await Thought.findOne({_id: req.params.id})
+            const thought = await Thought.findOne({_id: req.params.thoughtId})
             if(!thought) {
                 return res.status(404).json({message: 'Cannot find thought by id'});
             }
-            await Thought.deleteOne({ _id: req.params.id });
+            await Thought.deleteOne({ _id: req.params.thoughtId });
             res.status(200).json({message: 'Delete successfully'});
         } catch (error) {
             res.status(500).json(error);
@@ -67,8 +67,8 @@ module.exports = {
         try {
             const thought = await Thought.findOneAndUpdate(
                 {_id: req.params.thoughtId},
-                {$pull: {reations: {reactionId: req.pararms.reactionId}}},
-                {runValidators: true, new: true}
+                {$pull: {reactions: {reactionId: req.params.reactionId}}},
+                {new: true}
             );
 
             if(!thought) {
